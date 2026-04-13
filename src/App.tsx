@@ -20,13 +20,19 @@ interface LevelConfig {
 const TOTAL_IMAGES = 31;
 
 const LEVELS_DESKTOP: LevelConfig[] = [
-  { level: 1, cols: 8, rows: 2, pairs: 8, baseScore: 1000 },
-  { level: 2, cols: 9, rows: 4, pairs: 18, baseScore: 2000 },
+  { level: 1, cols: 3, rows: 2, pairs: 3, baseScore: 400 },
+  { level: 2, cols: 4, rows: 3, pairs: 6, baseScore: 800 },
+  { level: 3, cols: 5, rows: 4, pairs: 10, baseScore: 1200 },
+  { level: 4, cols: 6, rows: 4, pairs: 12, baseScore: 1600 },
+  { level: 5, cols: 9, rows: 4, pairs: 18, baseScore: 2500 },
 ];
 
 const LEVELS_MOBILE: LevelConfig[] = [
-  { level: 1, cols: 4, rows: 4, pairs: 8, baseScore: 1000 },
-  { level: 2, cols: 6, rows: 6, pairs: 18, baseScore: 2000 },
+  { level: 1, cols: 2, rows: 3, pairs: 3, baseScore: 400 },
+  { level: 2, cols: 3, rows: 4, pairs: 6, baseScore: 800 },
+  { level: 3, cols: 4, rows: 5, pairs: 10, baseScore: 1200 },
+  { level: 4, cols: 4, rows: 6, pairs: 12, baseScore: 1600 },
+  { level: 5, cols: 6, rows: 6, pairs: 18, baseScore: 2500 },
 ];
 
 const DESKTOP_BREAKPOINT = 1024;
@@ -64,7 +70,7 @@ function shuffleArray<T>(array: T[]): T[] {
 function pickRandomImages(count: number): string[] {
   const all = Array.from(
     { length: TOTAL_IMAGES - 1 },
-    (_, i) => `/cards/card-${String(i + 2).padStart(2, "0")}.jpg`,
+    (_, i) => `${import.meta.env.BASE_URL}cards/card-${String(i + 2).padStart(2, "0")}.webp`,
   );
   return shuffleArray(all).slice(0, count);
 }
@@ -198,7 +204,7 @@ function App() {
             gridTemplateColumns: `repeat(${currentLevel.cols}, 1fr)`,
             gridTemplateRows: `repeat(${currentLevel.rows}, 1fr)`,
             aspectRatio: `${currentLevel.cols * 5} / ${currentLevel.rows * 7}`,
-            ...(level === 0 ? { width: "100%" } : { height: "100%" }),
+            ...(currentLevel.cols >= currentLevel.rows ? { width: "100%" } : { height: "100%" }),
           }}
         >
           {cards.map((card) => {
@@ -211,7 +217,7 @@ function App() {
               >
                 <div className="card-inner">
                   <div className="card-front">
-                    <img src="/cards/card-01.jpg" alt="card back" />
+                    <img src={`${import.meta.env.BASE_URL}cards/card-01.webp`} alt="card back" />
                   </div>
                   <div className="card-back">
                     <img src={card.image} alt="card" />
